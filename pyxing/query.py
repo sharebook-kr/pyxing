@@ -49,12 +49,20 @@ class XAQuery:
 
 
 if __name__ == "__main__":
+    # 로그인 정보
+    f = open("../account.txt", "rt")
+    lines = f.readlines()
+    id = lines[0].strip()
+    password = lines[1].strip()
+    cert = lines[2].strip()
+    f.close()
+
     # 로그인
     from pyxing import session
 
     # Session
     xasession = session.XASession()
-    xasession.login("id", "password", "cert", block=True)
+    xasession.login(id, password, cert, block=True)
 
     # Query
     xaquery = XAQuery()

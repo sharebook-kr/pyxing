@@ -14,7 +14,6 @@ class XASessionEvents:
         :param msg: 서버에서 받은 메시지 정보
         :return:
         """
-        print(code, msg)
         if code == '0000':
             self.user_obj.connected = True
 
@@ -82,8 +81,17 @@ class XASession:
 
 
 if __name__ == "__main__":
+    # 로그인 정보
+    f = open("../account.txt", "rt")
+    lines = f.readlines()
+    id = lines[0].strip()
+    password = lines[1].strip()
+    cert = lines[2].strip()
+    f.close()
+
+    # 객체 생성
     session = XASession()
-    session.login("id", "password", "cert", block=True)
+    session.login(id, password, cert, block=True)
     acc = session.get_account_list(0)
     print(acc)
 

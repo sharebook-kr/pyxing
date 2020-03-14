@@ -6,8 +6,17 @@ from PyQt5.QtWidgets import *
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        # 계정정보
+        f = open("account.txt", "rt")
+        lines = f.readlines()
+        id = lines[0].strip()
+        password = lines[1].strip()
+        cert = lines[2].strip()
+        f.close()
+
         self.xasession = XASession()
-        self.xasession.login("id", "password", "cert", block=False)
+        self.xasession.login(id, password, cert, block=False)
 
         # button
         self.button = QPushButton("계좌 조회", self)
