@@ -16,11 +16,15 @@ xasession.login(id, password, cert, block=True)
 # Query
 xaquery = XAQuery()
 xaquery.register_res("t1102.res")
-xaquery.set_field_data("t1102InBlock", "shcode", "039490")
+xaquery.set_field_data("shcode", "039490")
 xaquery.request()
 
-name = xaquery.get_field_data("t1102OutBlock", "hname")
-price = xaquery.get_field_data("t1102OutBlock", "price")
+name = xaquery.get_field_data("hname")
+price = xaquery.get_field_data("price")
 print(name, price)
 
 
+# block request
+df = xaquery.block_request("t8430", gubun=0)
+print(df)
+df.to_excel("code.xlsx")
