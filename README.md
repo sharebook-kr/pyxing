@@ -1,6 +1,8 @@
 # pyxing
 이베스트투자증권 xing API python wrapper 
 
+https://wikidocs.net/book/4159
+
 ## 로그인
 
 ```python
