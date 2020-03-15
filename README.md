@@ -1,5 +1,5 @@
 # pyxing
-xing api python wrapper 
+이베스트투자증권 xing API python wrapper 
 
 ## 로그인
 
