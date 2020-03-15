@@ -31,5 +31,5 @@ xasession.login("아이디", "비밀번호", "공인인증비밀번호", block=T
 xaquery = XAQuery()
 df = xaquery.block_request("t8430", gubun=0)
 print(df)
-df.to_excel("code.xlsx")
+#df.to_excel("code.xlsx")
 ```
