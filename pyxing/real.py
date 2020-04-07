@@ -2,7 +2,7 @@ import pandas
 import win32com.client
 import pythoncom
 from queue import Queue
-import res
+from pyxing import res
 
 
 class XARealEvents:
