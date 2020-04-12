@@ -29,19 +29,21 @@ class XASessionEvents:
 
 
 class XASession:
-    def __init__(self, demo=False):
+    def __init__(self, type=0):
         self.com_obj = win32com.client.Dispatch("XA_Session.XASession")                     # COM 객체 생성
         self.event_handler = win32com.client.WithEvents(self.com_obj, XASessionEvents)      # 이벤트 처리 클래스 연결
         self.event_handler.connect(self.com_obj, self)
 
         self.connected = False
-        self._connect_server(demo=demo)
+        self._connect_server(type)
 
-    def _connect_server(self, demo):
-        if demo == True:
+    def _connect_server(self, type):
+        if type == 0:
+            server = "hts.ebestsec.co.kr"
+        elif type == 1:
             server = "demo.ebestsec.co.kr"
         else:
-            server = "hts.ebestsec.co.kr"
+            server = "127.0.0.1"
 
         self.com_obj.ConnectServer(server, 20001)
 

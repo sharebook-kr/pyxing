@@ -14,7 +14,10 @@ class XARealEvents:
     def OnReceiveRealData(self, trcode):
         res_data = self.user_obj.res.get(trcode)
         out_data = {}
-        for field in res_data['outblock_field']:
+
+        out_block = res_data['outblock'][0]
+
+        for field in out_block['OutBlock']:
             data = self.user_obj.get_field_data(field)
             out_data[field] = data
 

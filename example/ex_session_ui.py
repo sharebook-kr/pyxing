@@ -8,7 +8,7 @@ class MyWindow(QMainWindow):
         super().__init__()
 
         # 계정정보
-        f = open("account.txt", "rt")
+        f = open("../account.txt", "rt")
         lines = f.readlines()
         id = lines[0].strip()
         password = lines[1].strip()

@@ -1,70 +1,81 @@
+# RES file parser
+'''
+{'trcode': "CSPAT00600",
+ 'inblock': [
+    {'CSPAT00600InBlock1': [  ]}
+ ],
+ 'outblock': [
+    {'CSPAT00600OutBlock1': [  ]}
+    {'CSPAT00600OutBlock2': [  ]}
+ }
+'''
+
+
+# res 파일 정보 라인 파싱 함수
+def parse_info(data):
+    tokens = data.split(',')
+    return tokens[2].strip()
+
+
+# InBlock/OutBlock 파싱 함수
+def parse_block(data):
+    # block 코드, 타입
+    block_info = data[0]
+    tokens = block_info.split(",")
+    block_code, block_type = tokens[0], tokens[-1][:-1]
+
+    # block fields
+    field_codes = []
+    fields = data[2:]
+
+    for line in fields:
+        field_code = line.split(',')[1].strip()
+        field_codes.append(field_code)
+
+    ret_data = {}
+    ret_data[block_code] = field_codes
+    return block_type, ret_data
+
+
 def parse_res(lines):
-    data = {}
-    inblock_field = []
-    outblock_field = []
+    lines = [line.strip() for line in lines]
 
-    parse_mode = 0        # 0: none, 1: inblock, 2: outblock
-    req_mode = 0          # 0: TR, 1: Real
+    info_index = [i for i,x in enumerate(lines) if x.startswith((".Func", ".Feed"))][0]
+    begin_indices = [i-1 for i,x in enumerate(lines) if x == "begin"]
+    end_indices = [i for i,x in enumerate(lines) if x == "end"]
+    block_indices = zip(begin_indices, end_indices)
 
-    for line in lines:
-        strip_line = line.strip()
+    ret_data = {"trcode": None, "inblock": [], "outblock": []}
 
-        if strip_line.startswith((".Func", ".Feed")):
-            # TR 목록/Real 목록
-            if strip_line.startswith(".Func"):
-                req_mode = 0
-            else:
-                req_mode = 1
+    # TR Code
+    tr_code = parse_info(lines[info_index])
+    ret_data["trcode"] = tr_code
 
-            tokens = strip_line.split(',')
-            data['name'] = tokens[2].strip()
-            continue
+    # Block
+    for start, end in block_indices:
+        block_type, block_data= parse_block(lines[start:end])
+        if block_type == "input":
+            ret_data["inblock"].append(block_data)
+        else:
+            ret_data["outblock"].append(block_data)
 
-        if "InBlock" in strip_line:
-            parse_mode = 1
-            continue
-
-        if "OutBlock" in strip_line:
-            parse_mode = 2
-            continue
-
-        if "END_DATA_MAP" in strip_line:
-            parse_mode = 0
-            continue
-
-        if parse_mode == 1 and strip_line != 'begin' and strip_line != 'end':
-            fields = strip_line.split(',')
-            field = fields[1].strip()
-            inblock_field.append(field)
-
-        if parse_mode == 2 and strip_line != 'begin' and strip_line != 'end':
-            fields = strip_line.split(',')
-            field = fields[1].strip()
-            outblock_field.append(field)
-
-
-    if req_mode == 0:
-        data['inblock'] = data['name'] + "InBlock"
-        data['outblock'] = data['name'] + "OutBlock"
-    else:
-        data['inblock'] = "InBlock"
-        data['outblock'] = "OutBlock"
-
-    data['inblock_field'] = inblock_field
-    data['outblock_field'] = outblock_field
-    return data
+    return ret_data
 
 
 if __name__ == "__main__":
     # TR(t8340)
-    #f = open("c:/eBEST/xingAPI/Res/t8430.res", encoding="euc-kr")
-    #lines = f.readlines()
-    #f.close()
-
-    # Real
-    f = open("c:/eBEST/xingAPI/Res/NWS.res", encoding="euc-kr")
+    f = open("c:/eBEST/xingAPI/Res/t8430.res", encoding="euc-kr")
     lines = f.readlines()
     f.close()
+
+    # f = open("c:/eBEST/xingAPI/Res/CSPAT00600.res", encoding="euc-kr")
+    # lines = f.readlines()
+    # f.close()
+
+    # Real
+    #f = open("c:/eBEST/xingAPI/Res/NWS.res", encoding="euc-kr")
+    #lines = f.readlines()
+    #f.close()
 
     import pprint
     data = parse_res(lines)

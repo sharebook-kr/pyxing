@@ -1,6 +1,6 @@
 from pyxing.session import *
 
-f = open("account.txt", "rt")
+f = open("../account.txt", "rt")
 lines = f.readlines()
 id = lines[0].strip()
 password = lines[1].strip()
