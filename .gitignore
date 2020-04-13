@@ -130,3 +130,5 @@ dmypy.json
 
 account.txt
 .idea/
+example/*.xlsx
+pyxing/*.xlsx
