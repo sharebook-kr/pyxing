@@ -3,6 +3,15 @@
 
 https://wikidocs.net/book/4159
 
+## 파이썬 버전
+
+32-bit 파이썬에서만 동작합니다. 
+권장 버전: Anaconda3-2019.10-Windows-x86.exe
+
+https://repo.anaconda.com/archive/
+
+
+
 ## 로그인
 
 ```python
