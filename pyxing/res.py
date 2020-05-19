@@ -29,8 +29,9 @@ def parse_block(data):
     fields = data[2:]
 
     for line in fields:
-        field_code = line.split(',')[1].strip()
-        field_codes.append(field_code)
+        if len(line) > 0:
+            field_code = line.split(',')[1].strip()
+            field_codes.append(field_code)
 
     ret_data = {}
     ret_data[block_code] = field_codes
